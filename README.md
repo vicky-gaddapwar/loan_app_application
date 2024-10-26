@@ -100,9 +100,9 @@ docker rm loan_application_api
 
 ## testing-in-local
 
-1. Create a PostgreSQL Database: Ensure that PostgreSQL is installed and running. Create a database named loandb:
+1. Create a PostgreSQL Database: Ensure that PostgreSQL is installed and running. Create a database named loan_app:
 
-psql -U postgres -c "CREATE DATABASE loan_app;"
+execute the .sql file given in the application.
 
 2. Install Dependencies: If you are not using Docker, install the required dependencies:
 pip install -r requirements.txt
