@@ -1,5 +1,5 @@
 import jwt
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone  # Import timezone
 from fastapi import HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
@@ -31,9 +31,9 @@ def verify_password(plain_password, hashed_password):
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
     if expires_delta:
-        expire = datetime.utcnow() + expires_delta
+        expire = datetime.now(timezone.utc) + expires_delta  # Use timezone-aware datetime
     else:
-        expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)  # Use timezone-aware datetime
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
@@ -50,15 +50,18 @@ def decode_access_token(token: str):
     except jwt.JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
-# Dependency to get the current user from the token
+# Get the current user
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    # decode the token
     token_data = decode_access_token(token)
+    
     user = db.query(User).filter(User.username == token_data.username).first()
+    
     if user is None:
         raise HTTPException(status_code=401, detail="Invalid user")
     return user
 
-# Dependency to check if current user is admin
+# Ccheck if the current usr is admin    
 def get_current_admin(user: User = Depends(get_current_user)):
     if user.role != "admin":
         raise HTTPException(status_code=403, detail="Access forbidden")

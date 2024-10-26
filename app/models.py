@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
-from datetime import datetime
+from datetime import datetime, timezone
 from app.database.db import Base
 
 class User(Base):
@@ -18,6 +18,6 @@ class LoanApplication(Base):
     loan_purpose = Column(String)
     duration = Column(Integer)
     status = Column(String, default="pending")
-    submission_date = Column(DateTime, default=datetime.utcnow)
+    submission_date = Column(DateTime, default=datetime.now(timezone.utc))
 
     user = relationship("User")
