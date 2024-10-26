@@ -1,5 +1,3 @@
-# app/auth/auth_utils.py
-
 import jwt
 from datetime import datetime, timedelta
 from fastapi import HTTPException, Depends
@@ -11,7 +9,7 @@ from app.models import User
 from app.schemas import TokenData
 
 # Secret key to encode and decode JWT tokens
-SECRET_KEY = "your_secret_key"
+SECRET_KEY = "Test_Secret"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
