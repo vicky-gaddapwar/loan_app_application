@@ -34,7 +34,6 @@ This is a FastAPI application that allows users to apply for loans and enables a
 ## Setup Instructions
 
 1. **Clone the Repository:**
-   ```bash
    git clone <repository_url>
    cd loan_application_api
 
@@ -55,7 +54,7 @@ GET /status/{application_id} - View the status of a specific loan application (u
 
 5. **Admin Approve/Reject Loan Application:**
 POST /admin/application/{application_id}/approve - Approve a loan application.
-POST /admin/application/{application_id}/reject - Reject a loan application.
+PUT /admin/application/{application_id}/reject - Reject a loan application. Allwed Values('pending', 'approved', 'rejected')
 
 6. **View All Loan Applications:**
 GET /admin/applications - View all loan applications (admin role).
@@ -100,12 +99,15 @@ docker rm loan_application_api
 
 ## testing-in-local
 
-1. Create a PostgreSQL Database: Ensure that PostgreSQL is installed and running. Create a database named loan_app:
+1. Create a PostgreSQL Database: Ensure that PostgreSQL is installed and running. Create a database:
 
-execute the .sql file given in the application.
+Execute the **schema.sql** file given in the application.
 
 2. Install Dependencies: If you are not using Docker, install the required dependencies:
-pip install -r requirements.txt
+**pip install -r requirements.txt**
 
-4. Set Up the below URL.
-SQLALCHEMY_DATABASE_URL=postgresql://<username>:<password>@localhost:5432/loandb
+4. Set Up the below URL replaying the username, password and database
+**SQLALCHEMY_DATABASE_URL=postgresql://<username>:<password>@localhost:5432/<database>**
+
+5. Use the below command to run the application
+**uvicorn app.main:app --reload**
